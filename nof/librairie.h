@@ -5,7 +5,7 @@
 #include <time.h>
 #include <string.h>
 #include <stdbool.h>
-
+//definition des constantes
 #define size_max 30
 #define nombre_max_d_etudiant 100
   //definition de l'enregistrement date
@@ -14,8 +14,8 @@ typedef struct{
         int mois;
         int annee;
     }date;
-    //definition de l'enregistrement etudiant
- typedef struct{
+//definition de l'enregistrement etudiant    
+typedef struct{
        char matricule[size_max];
        char nom[size_max];
        char prenom[size_max];
@@ -25,22 +25,25 @@ typedef struct{
        char sexe;
        char region_origine[size_max];
     }etudiant;
-    //definition du tableau d'enregistrement
-etudiant bairo[nombre_max_d_etudiant];
-int nombre_etudiant=0;
+    
+    //definition des variables globales
+extern etudiant bairo[nombre_max_d_etudiant];
+extern int nombre_etudiant;
+//declaration des fonctions
 void vider_buffer();
-
 void nettoyer_buffer_fgets(char *chaine);
+date extraction_date();
 void afficher_menu();
-void afficher_sous_menu();
+void sauvegarder_dans_fichier(etudiant e);
+void charger_depuis_fichier();
+void actualiser_fichier();  
+void tri_alphabetique();
 void ajouter_un_etudiant();
-void modifier_les_informations_d_un_etudiant();
+void modifier_une_information_de_l_etudiant();
 void suppression_etudiant();
-int recherche_par_matricule(char matricule_cherche[], etudiant *etu_trouve);
-void tri_par_ordre_alphabetique();
-void recherche_par_dichotomie();
+int recherche_par_matricule(char mat[], etudiant *res);
 void  calcul_age();
 void tri_filiere();
-void afficher_la_liste();
+
 
 #endif

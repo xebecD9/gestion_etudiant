@@ -1,3 +1,6 @@
-23enspm0567 essame archange 23 6 2000 hydrolique hymae M sud
-35enspm0999 espabrol gilllo 3 12 2005 biomasse enren F littoral
-23enspm0456 mbeng aurelien 12 12 2003 routiere genie civile M centre
+23enspm0001;essame;joseph;15/04/2007;infotel;data science;M;littoral
+23enspm0002;eyenga;claire;16/07/2006;infotel;reseau et telecom;F;centre
+23enspm0003;fotso;aurelien;23/08/2004;infotel;securite;M;ouest
+23enspm0004;eningoue;prince samuel;04/04/2003;infotel;robotique;M;est
+23enspm0005;armand;robert;07/08/2009;infotel;genie logiciel;M;nord
+23enspm0006;marouane;ousmane;01/03/2005;hymae;hydrolique;M;extreme nord

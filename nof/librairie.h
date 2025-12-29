@@ -15,33 +15,34 @@ typedef struct{
         int annee;
     }date;
 //definition de l'enregistrement etudiant    
-typedef struct{
-       char matricule[size_max];
-       char nom[size_max];
-       char prenom[size_max];
-       date date_naissance;
-       char filiere[size_max];
-       char departement[size_max];
-       char sexe;
-       char region_origine[size_max];
-    }etudiant;
-    
+typedef struct {
+    char matricule[size_max];
+    char nom[size_max];
+    char prenom[size_max];
+    date date_naissance;
+    char filiere[size_max];
+    char departement[size_max];
+    char sexe;
+    char region_origine[size_max];
+} etudiant;
     //definition des variables globales
 extern etudiant bairo[nombre_max_d_etudiant];
-extern int nombre_etudiant;
+extern int nombre_etudiant ;
 //declaration des fonctions
 void vider_buffer();
 void nettoyer_buffer_fgets(char *chaine);
 date extraction_date();
 void afficher_menu();
 void sauvegarder_dans_fichier(etudiant e);
-void charger_depuis_fichier();
-void actualiser_fichier();  
+void charger_donnees();
+void actualiser_fichier(); 
+void affiche_liste_etudiant(); 
 void tri_alphabetique();
 void ajouter_un_etudiant();
 void modifier_une_information_de_l_etudiant();
 void suppression_etudiant();
 int recherche_par_matricule(char mat[], etudiant *res);
+int recherche_dichotomique(char matrecher[], etudiant *res);
 void  calcul_age();
 void tri_filiere();
 

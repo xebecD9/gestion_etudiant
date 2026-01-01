@@ -334,3 +334,45 @@ void afficher_menu() {
     printf("8. Quitter\n");
     printf("Entrer l'operation que vous souhaitez effectuer : ");
 }
+
+void afficher_liste_etudiants_par_filiere() {
+    if (nombre_etudiant == 0) {
+        printf("Aucun etudiant en memoire.\n");
+        return;
+    }
+
+    etudiant copie[nombre_max_d_etudiant];
+
+    // COPIE DU TABLEAU
+    for (int i = 0; i < nombre_etudiant; i++) {
+        copie[i] = bairo[i];
+    }
+
+    // TRI PAR FILIERE
+    etudiant temp;
+    for (int i = 0; i < nombre_etudiant - 1; i++) {
+        for (int j = i + 1; j < nombre_etudiant; j++) {
+            if (strcmp(copie[i].filiere, copie[j].filiere) > 0) {
+                temp = copie[i];
+                copie[i] = copie[j];
+                copie[j] = temp;
+            }
+        }
+    }
+
+    // AFFICHAGE
+    printf("\n===== LISTE DES ETUDIANTS (TRIEE PAR FILIERE) =====\n");
+    printf("%-10s %-12s %-12s %-10s %-10s %-3s\n",
+           "Matricule", "Nom", "Prenom", "Filiere", "Departement", "Sexe");
+    printf("--------------------------------------------------\n");
+
+    for (int i = 0; i < nombre_etudiant; i++) {
+        printf("%-10s %-12s %-12s %-10s %-10s %-3c\n",
+               copie[i].matricule,
+               copie[i].nom,
+               copie[i].prenom,
+               copie[i].filiere,
+               copie[i].departement,
+               copie[i].sexe);
+    }
+}

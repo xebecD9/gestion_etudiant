@@ -25,9 +25,15 @@ typedef struct {
     char sexe;
     char region_origine[size_max];
 } etudiant;
+//structure qui me permet de generer les statistiques de l'ecole
+typedef struct {
+    char label[size_max];
+    int compteur;
+} StatItem;
     //definition des variables globales
 extern etudiant bairo[nombre_max_d_etudiant];
 extern int nombre_etudiant ;
+
 //declaration des fonctions
 void vider_buffer();
 void nettoyer_buffer_fgets(char *chaine);
@@ -38,6 +44,7 @@ void charger_donnees();
 void actualiser_fichier(); 
 void affiche_liste_etudiant(); 
 void tri_alphabetique();
+void tri_departement();
 void ajouter_un_etudiant();
 void modifier_une_information_de_l_etudiant();
 void suppression_etudiant();
@@ -45,6 +52,8 @@ int recherche_par_matricule(char mat[], etudiant *res);
 int recherche_dichotomique(char matrecher[], etudiant *res);
 void  calcul_age();
 void tri_filiere();
+void editer_donnees_etudiant(etudiant *e);
+void statistiques_ecole();
 
 
 #endif

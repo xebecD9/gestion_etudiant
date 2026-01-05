@@ -1,13 +1,15 @@
-========================================================================================================
-                                 LISTE DES ETUDIANTS - ENSPM                                            
-========================================================================================================
+=========================================================================================================================
+                                                 LISTE DES ETUDIANTS - ENSPM                                            
+=========================================================================================================================
 
 N°  | MATRICULE    | NOM             | PRENOM          | NAISSANCE    | SEXE | FILIERE        
---------------------------------------------------------------------------------------------------------
-1    | 23enspm0001  | essame          | joseph          | 15/04/2007 | M    | data science   
-2    | 23enspm0002  | eyenga          | claire          | 16/07/2006 | F    | reseau et telecom
-3    | 23enspm0003  | fotso           | aurelien        | 23/08/2004 | M    | securite       
-4    | 23enspm0004  | eningoue        | prince samuel   | 04/04/2003 | M    | robotique      
-5    | 23enspm0005  | armand          | robert          | 07/08/2009 | M    | genie logiciel 
-6    | 23enspm0006  | marouane        | ousmane         | 01/03/2005 | M    | hydrolique     
---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
+1    | 23enspm0001  | essame          | joseph          | 15/04/2007 | M    | data science   |infotel        |littoral       
+2    | 23enspm0002  | eyenga          | claire          | 16/07/2006 | F    | reseau et telecom|infotel        |centre         
+3    | 23enspm0003  | fotso           | aurelien        | 23/08/2004 | M    | securite       |infotel        |ouest          
+4    | 23enspm0004  | eningoue        | prince samuel   | 04/04/2003 | M    | robotique      |infotel        |est            
+5    | 23enspm0005  | armand          | robert          | 07/08/2009 | M    | genie logiciel |infotel        |nord           
+6    | 23enspm0006  | marouane        | ousmane         | 01/03/2005 | M    | hydrolique     |hymae          |extreme nord   
+7    | 23enspm0007  | ambani          | myriam          | 06/09/2004 | F    | genie mecanique|gtc            |adamaoua       
+8    | 23enspm0008  | assonkeng       | neuville        | 23/09/2006 | M    | solaire        |enren          |ouest          
+--------------------------------------------------------------------------------------------------------------------------------

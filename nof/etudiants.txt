@@ -4,3 +4,5 @@
 23enspm0004;eningoue;prince samuel;04/04/2003;infotel;robotique;M;est
 23enspm0005;armand;robert;07/08/2009;infotel;genie logiciel;M;nord
 23enspm0006;marouane;ousmane;01/03/2005;hymae;hydrolique;M;extreme nord
+23enspm0007;ambani;myriam;06/09/2004;gtc;genie mecanique;F;adamaoua
+23enspm0008;assonkeng;neuville;23/09/2006;enren;solaire;M;ouest

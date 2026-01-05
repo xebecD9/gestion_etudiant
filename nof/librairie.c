@@ -229,7 +229,7 @@ void calcul_age() {
             age--;
         printf("💡 L'étudiant %s %s a %d ans.\n", e.prenom, e.nom, age);
     } else {
-        printf("❌ Étudiant introuvable.\n");
+        printf("❌ Étudiant introuvables.\n");
     }
 }
 void affiche_liste_etudiant() {

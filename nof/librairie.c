@@ -92,7 +92,6 @@ void ajouter_un_etudiant() {
         printf("\n⚠️  [Erreur] Capacité maximale atteinte.\n");
         return;
     }
-
     etudiant n;
     printf("\n--- 📝 FORMULAIRE D'INSCRIPTION ---\n");
     printf("🆔 Matricule        : "); 
@@ -146,19 +145,41 @@ void editer_donnees_etudiant(etudiant *e) {
 
     printf("✨ Entrez la nouvelle information : ");
     switch(choix) {
-        case 1: fgets(e->nom, size_max, stdin); nettoyer_buffer_fgets(e->nom); break;
-        case 2: fgets(e->prenom, size_max, stdin); nettoyer_buffer_fgets(e->prenom); break;
-        case 3: fgets(e->departement, size_max, stdin); nettoyer_buffer_fgets(e->departement); break;
-        case 4: fgets(e->filiere, size_max, stdin); nettoyer_buffer_fgets(e->filiere); break;
-        case 5: fgets(e->region_origine, size_max, stdin); nettoyer_buffer_fgets(e->region_origine); break;
-        case 6: printf("(M/F) : "); scanf(" %c", &e->sexe); vider_buffer(); break;
-        case 7: 
-            printf("(JJ MM AAAA) : ");
-            scanf("%d %d %d", &e->date_naissance.jour, &e->date_naissance.mois, &e->date_naissance.annee);
+        case 1:
+            printf("👤Nom : ");
+            fgets(e->nom, size_max, stdin); 
+            nettoyer_buffer_fgets(e->nom); break;
+        case 2: 
+            printf("👤Prénom : ");
+            fgets(e->prenom, size_max, stdin); 
+            nettoyer_buffer_fgets(e->prenom); 
+            break;
+        case 3:     
+            printf("🏢 Département : ");
+            fgets(e->departement, size_max, stdin); 
+            nettoyer_buffer_fgets(e->departement); 
+            break;
+        case 4: 
+            printf("📚 Filière : ");
+            fgets(e->filiere, size_max, stdin); 
+            nettoyer_buffer_fgets(e->filiere); 
+            break;
+        case 5: 
+            printf("🌍 Région d'origine : ");
+            fgets(e->region_origine, size_max, stdin); 
+            nettoyer_buffer_fgets(e->region_origine); 
+            break;
+        case 6: 
+            printf("🚻 sexe(M/F) : "); 
+            scanf(" %c", &e->sexe); 
+            vider_buffer(); 
+            break;
+        case 7:
+            printf("📅 Date de naissance (JJ MM AAAA) : ");
+                scanf("%d %d %d", &e->date_naissance.jour, &e->date_naissance.mois, &e->date_naissance.annee);
             vider_buffer();
             break;
-        case 8:{
-
+        case 8: {
             printf("\n--- 📝 MODIFICATION COMPLETE ---\n");
             printf("👤 Nom : "); 
             fgets(e->nom, size_max, stdin); 
@@ -172,7 +193,7 @@ void editer_donnees_etudiant(etudiant *e) {
             printf("📚 Filière : "); 
             fgets(e->filiere, size_max, stdin); 
             nettoyer_buffer_fgets(e->filiere);
-            printf("🌍 Région : "); 
+            printf("🌍 Région d'origine : "); 
             fgets(e->region_origine, size_max, stdin); 
             nettoyer_buffer_fgets(e->region_origine);
             printf("🚻 Sexe (M/F) : "); 
@@ -190,8 +211,8 @@ void editer_donnees_etudiant(etudiant *e) {
 }
 void modifier_une_information_de_l_etudiant() {
     char mat[size_max];
-    printf("\n--- 🔍 RECHERCHE POUR MODIFICATION ---\n");
-    printf("Entrez le matricule : ");
+    printf("\n--- 🔍 RECHERCHE DU MATRICULE POUR MODIFICATION ---\n");
+    printf("Entrez le matricule de l'étudiant dont les informations doivent être modifiées : ");
     fgets(mat, size_max, stdin); 
     nettoyer_buffer_fgets(mat);
 

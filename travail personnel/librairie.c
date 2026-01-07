@@ -238,7 +238,7 @@ void modifier_une_information_de_l_etudiant() {
 void calcul_age() {
     char mat[size_max];
     etudiant e;
-    printf("\n--- 🎂 CALCUL D'ÂGE ---\n");
+   
     printf("🔍 Matricule de l'étudiant : ");
     fgets(mat, size_max, stdin); 
     nettoyer_buffer_fgets(mat);
@@ -255,23 +255,23 @@ void calcul_age() {
 }
 void affiche_liste_etudiant() {
     if (nombre_etudiant == 0) {
-        printf("Aucun etudiant a afficher.\n");
+        printf("⚠️Aucun etudiant a afficher.\n");
         return;
     }
 
     FILE *f = fopen("liste des etudiants.txt", "w");
     if (f == NULL) {
-        printf("Erreur de creation de la liste des etudiants.\n");
+        printf("⚠️[Warning]Creation de la liste des etudiants impossible.\n");
         return;
     }
 
 
     fprintf(f, "=========================================================================================================================\n");
-    fprintf(f, "                                                 LISTE DES ETUDIANTS - ENSPM                                            \n");
+    fprintf(f, "                                                🎓 LISTE DES ETUDIANTS - ENSPM 🎓                                           \n");
     fprintf(f, "=========================================================================================================================\n\n");
 
     
-    fprintf(f, "%-4s | %-12s | %-15s | %-15s | %-12s | %-4s | %-15s\n", 
+    fprintf(f, "%-4s | %-12s | %-15s | %-15s | %-12s | %-4s | %-15s|%-15s |%-15s\n", 
             "N°", "MATRICULE", "NOM", "PRENOM", "NAISSANCE", "SEXE", "FILIERE","DEPARTEMENT","REGION D'ORIGINE");
     fprintf(f, "---------------------------------------------------------------------------------------------------------------------------\n");
 
@@ -296,7 +296,7 @@ void affiche_liste_etudiant() {
     
 
     fclose(f);
-    printf("\n[Succes] La liste des etudiants a ete generee dans 'liste des etudiants.txt'.\n");
+    printf("\n✅ [Succes] La liste des etudiants a ete generee dans 'liste des etudiants.txt'.\n");
 }
 void tri_departement(){
     if(nombre_etudiant == 0){
@@ -530,7 +530,7 @@ void afficher_menu() {
     printf("    ┃      🎓 GESTION DES ÉTUDIANTS - ENSPM      ┃\n");
     printf("    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
     printf("    1.  ➕ Ajouter un étudiant\n");
-    printf("    2.  🔍 Recherche par Matricule\n");
+    printf("    2.  🔍 Recherche par comparaison des Matricules\n");
     printf("    3.  ⚡ Recherche rapide (Dichotomie)\n");
     printf("    4.  🎂 Calculer l'âge\n");
     printf("    5.  ⚙️  Modifier un étudiant\n");

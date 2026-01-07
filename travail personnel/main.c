@@ -33,27 +33,34 @@ int main() {
                 printf("===RECHERCHE DICHOTOMIQUE===\n");
                 printf("Veuillez le matricule de l'etudiant que vous rechercher : ");
                 fgets(mat2, size_max, stdin); nettoyer_buffer_fgets(mat2);
-                if(recherche_dichotomique(mat2, &d)) printf("L'etudiant recherche s'appelle : %s %s\n", d.nom, d.prenom);
-                else printf("[Error]Etudiant aucun etudiant trouve.\n");
+                if(recherche_dichotomique(mat2, &d)) {
+                printf("L'etudiant recherche s'appelle : %s %s\n", d.nom, d.prenom);
+                printf("voici ces informations");
+                }
+                else {
+                printf("[Error]Etudiant aucun etudiant trouve.\n");
+                }
+            break;
             }
+
             case 4: 
-                printf("===CALCUL D'AGE===\n");
+                printf("=== 🎂 CALCUL D'AGE  ===\n");
                 calcul_age(); 
                 break;
             case 5:
-                printf("===MODIFICATION===\n");
+                printf("===  ⚙️MODIFICATION  ===\n");
                 modifier_une_information_de_l_etudiant(); 
                 break;
             case 6: 
-                printf("===SUPPRESSION===\n");
+                printf("===  SUPPRESSION  ===\n");
                 suppression_etudiant(); 
                 break;
             case 7: 
-                printf("===TRI ALPHABETIQUE===\n");
+                printf("===  TRI ALPHABETIQUE  ===\n");
                 tri_alphabetique(); 
                 break;
             case 8: 
-                printf("===TRI PAR FILIERE===\n");
+                printf("===  TRI PAR FILIERE  ===\n");
                 tri_filiere(); 
                 break;
             case 9:

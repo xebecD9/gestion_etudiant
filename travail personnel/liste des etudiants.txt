@@ -1,8 +1,8 @@
 =========================================================================================================================
-                                                 LISTE DES ETUDIANTS - ENSPM                                            
+                                                🎓 LISTE DES ETUDIANTS - ENSPM 🎓                                           
 =========================================================================================================================
 
-N°  | MATRICULE    | NOM             | PRENOM          | NAISSANCE    | SEXE | FILIERE        
+N°  | MATRICULE    | NOM             | PRENOM          | NAISSANCE    | SEXE | FILIERE        |DEPARTEMENT     |REGION D'ORIGINE
 ---------------------------------------------------------------------------------------------------------------------------
 1    | 23enspm0001  | essame          | joseph          | 15/04/2007 | M    | data science   |infotel        |littoral       
 2    | 23enspm0002  | eyenga          | claire          | 16/07/2006 | F    | reseau et telecom|infotel        |centre         
@@ -12,4 +12,5 @@ N°  | MATRICULE    | NOM             | PRENOM          | NAISSANCE    | SEXE | 
 6    | 23enspm0006  | marouane        | ousmane         | 01/03/2005 | M    | hydrolique     |hymae          |extreme nord   
 7    | 23enspm0007  | ambani          | myriam          | 06/09/2004 | F    | genie mecanique|gtc            |adamaoua       
 8    | 23enspm0008  | assonkeng       | neuville        | 23/09/2006 | M    | solaire        |enren          |ouest          
+9    | 23enspm0009  | nouhou          | tolo robert     | 14/04/2005 | M    | genie routier  |genie civile   |sud ouest      
 --------------------------------------------------------------------------------------------------------------------------------

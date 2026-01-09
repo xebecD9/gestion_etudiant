@@ -235,24 +235,28 @@ void modifier_une_information_de_l_etudiant() {
     }
 }
 
-void calcul_age() {
-    char mat[size_max];
-    etudiant e;
-   
-    printf("🔍 Matricule de l'étudiant : ");
+void calcul_age()
+{ 
+    char mat[size_max]; 
+    etudiant e; 
+    printf("Matricule de l'étudiant : "); 
     fgets(mat, size_max, stdin); 
-    nettoyer_buffer_fgets(mat);
-
-    if (recherche_par_matricule(mat, &e)) {
-        date d = extraction_date();
-        int age = d.annee - e.date_naissance.annee;
-        if (d.mois < e.date_naissance.mois || (d.mois == e.date_naissance.mois && d.jour < e.date_naissance.jour))
-            age--;
-        printf("💡 L'étudiant %s %s a %d ans.\n", e.prenom, e.nom, age);
-    } else {
-        printf("❌ Étudiant introuvables.\n");
-    }
-}
+    nettoyer_buffer_fgets(mat); 
+    if (recherche_par_matricule(mat, &e)) { 
+        date d = extraction_date(); 
+        int age = d.annee - e.date_naissance.annee; 
+        if (e.date_naissance.mois == 2 && e.date_naissance.jour == 29) { 
+            if (d.mois < 2 || (d.mois == 2 && d.jour < 29)) { 
+                age--; 
+            } 
+        } else if (d.mois < e.date_naissance.mois || (d.mois == e.date_naissance.mois && d.jour < e.date_naissance.jour)) { 
+            age--; 
+        } 
+        printf("L'étudiant %s %s a %d ans.\n", e.prenom, e.nom, age); 
+    } else { 
+        printf("Étudiant introuvable.\n"); 
+    } 
+} 
 void affiche_liste_etudiant() {
     if (nombre_etudiant == 0) {
         printf("⚠️Aucun etudiant a afficher.\n");

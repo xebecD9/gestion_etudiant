@@ -316,6 +316,19 @@ void tri_departement(){
             }
         }
     }
+   void trie_par_departement(Etudiant *etudiants, int n) { 
+    int i, j; 
+    Etudiant temp; 
+    for (i = 0; i < n - 1; i++) { 
+        for (j = i + 1; j < n; j++) { 
+            if (strcmp(etudiants[i].departement, etudiants[j].departement) > 0) { 
+                temp = etudiants[i]; 
+                etudiants[i] = etudiants[j]; 
+                etudiants[j] = temp; 
+            } 
+        } 
+    } 
+} 
         char departement_ok[size_max] = "";
     for(int i = 0; i < nombre_etudiant; i++) {
         if(strcmp(departement_ok, bairo[i].departement) != 0) {

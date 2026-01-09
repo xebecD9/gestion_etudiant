@@ -1,15 +1,8 @@
 #include "librairie.h"
 
+
 etudiant bairo[nombre_max_d_etudiant];
-int nombre_etudiant = 0 ;
-
-
-
-/* =========================================================
-   🎓 SYSTEME DE GESTION DES ETUDIANTS - ENSPM 🎓
-   ========================================================= */
-
-
+int nombre_etudiant = 0;
 
 /* =========================================================
    🛠️ FONCTIONS UTILITAIRES
@@ -33,15 +26,25 @@ date extraction_date() {
     d.annee = tm->tm_year + 1900;
     return d;
 }
+void pause() {
+    printf("\nAppuyez sur [Entree] pour continuer...");
+    getchar(); 
+}
+void effacer_ecran() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
 
 /* =========================================================
-   💾 GESTION DES FICHIERS
+   💾 GESTION DES FICHIERS (PERSISTENCE)
    ========================================================= */
 
 void sauvegarder_dans_fichier(etudiant e) {
     FILE *f = fopen("etudiants.txt", "a"); 
     if (f == NULL) return;
-    
     fprintf(f, "%s;%s;%s;%02d/%02d/%04d;%s;%s;%c;%s\n", 
             e.matricule, e.nom, e.prenom, 
             e.date_naissance.jour, e.date_naissance.mois, e.date_naissance.annee, 
@@ -52,7 +55,6 @@ void sauvegarder_dans_fichier(etudiant e) {
 void actualiser_fichier() {
     FILE *f = fopen("etudiants.txt", "w");
     if (f == NULL) return;
-
     for (int i = 0; i < nombre_etudiant; i++) {
         fprintf(f, "%s;%s;%s;%02d/%02d/%04d;%s;%s;%c;%s\n", 
                 bairo[i].matricule, bairo[i].nom, bairo[i].prenom, 
@@ -60,487 +62,424 @@ void actualiser_fichier() {
                 bairo[i].departement, bairo[i].filiere, bairo[i].sexe, bairo[i].region_origine);
     }
     fclose(f);
-}void charger_donnees() {
+}
+
+void charger_donnees() {
     FILE *f = fopen("etudiants.txt", "r");
     if (f == NULL) return; 
-
     nombre_etudiant = 0;
     while (nombre_etudiant < nombre_max_d_etudiant && 
            fscanf(f, " %[^;];%[^;];%[^;];%d/%d/%d;%[^;];%[^;]; %c;%[^\n]", 
-           bairo[nombre_etudiant].matricule, 
-           bairo[nombre_etudiant].nom, 
-           bairo[nombre_etudiant].prenom,
-           &bairo[nombre_etudiant].date_naissance.jour, 
-           &bairo[nombre_etudiant].date_naissance.mois, 
-           &bairo[nombre_etudiant].date_naissance.annee,
-           bairo[nombre_etudiant].departement, 
-           bairo[nombre_etudiant].filiere, 
-           &bairo[nombre_etudiant].sexe, 
-           bairo[nombre_etudiant].region_origine) == 10) {
+           bairo[nombre_etudiant].matricule, bairo[nombre_etudiant].nom, bairo[nombre_etudiant].prenom,
+           &bairo[nombre_etudiant].date_naissance.jour, &bairo[nombre_etudiant].date_naissance.mois, &bairo[nombre_etudiant].date_naissance.annee,
+           bairo[nombre_etudiant].departement, bairo[nombre_etudiant].filiere, 
+           &bairo[nombre_etudiant].sexe, bairo[nombre_etudiant].region_origine) == 10) {
         nombre_etudiant++;
     }
     fclose(f);
 }
 
-
-/*==========================================================
-   👥 GESTION DES ETUDIANTS
-  ==========================================================*/
+/* =========================================================
+   👥 GESTION ADMINISTRATIVE
+   ========================================================= */
 
 void ajouter_un_etudiant() {
+    
+    printf("┌──────────────────────────────────────────┐\n");
+    printf("│      📝 NOUVELLE INSCRIPTION ENSPM       │\n");
+    printf("└──────────────────────────────────────────┘\n");
+    
     if (nombre_etudiant >= nombre_max_d_etudiant) {
-        printf("\n⚠️  [Erreur] Capacité maximale atteinte.\n");
+        printf("⚠️ [Erreur] Capacité maximale atteinte.\n");
         return;
     }
+
     etudiant n;
-    printf("\n--- 📝 FORMULAIRE D'INSCRIPTION ---\n");
-    printf("🆔 Matricule        : "); 
-    fgets(n.matricule, size_max, stdin); 
-    nettoyer_buffer_fgets(n.matricule);
+    printf("🆔 Matricule        : "); fgets(n.matricule, size_max, stdin); nettoyer_buffer_fgets(n.matricule);
+    printf("👤 Nom              : "); fgets(n.nom, size_max, stdin); nettoyer_buffer_fgets(n.nom);
+    printf("👤 Prénom           : "); fgets(n.prenom, size_max, stdin); nettoyer_buffer_fgets(n.prenom);
+    printf("🏢 Département      : "); fgets(n.departement, size_max, stdin); nettoyer_buffer_fgets(n.departement);
+    printf("📚 Filière          : "); fgets(n.filiere, size_max, stdin); nettoyer_buffer_fgets(n.filiere);
+    printf("🌍 Région d'origine : "); fgets(n.region_origine, size_max, stdin); nettoyer_buffer_fgets(n.region_origine);
+    printf("🚻 Sexe (M/F)       : "); scanf(" %c", &n.sexe); vider_buffer();
+    printf("📅 Date Naissance (JJ MM AAAA) : "); scanf("%d %d %d", &n.date_naissance.jour, &n.date_naissance.mois, &n.date_naissance.annee); vider_buffer(); 
 
-    printf("👤 Nom              : "); 
-    fgets(n.nom, size_max, stdin); 
-    nettoyer_buffer_fgets(n.nom);
-
-    printf("👤 Prénom           : "); 
-    fgets(n.prenom, size_max, stdin); 
-    nettoyer_buffer_fgets(n.prenom);
-
-    printf("🏢 Département      : "); 
-    fgets(n.departement, size_max, stdin); 
-    nettoyer_buffer_fgets(n.departement);
-
-    printf("📚 Filière          : "); 
-    fgets(n.filiere, size_max, stdin); 
-    nettoyer_buffer_fgets(n.filiere);
-
-    printf("🌍 Région d'origine : "); 
-    fgets(n.region_origine, size_max, stdin); 
-    nettoyer_buffer_fgets(n.region_origine);
-
-    printf("🚻 Sexe (M/F)       : ");
-    scanf(" %c", &n.sexe); 
-    vider_buffer();
-
-    printf("📅 Date de Naissance (JJ MM AAAA) : ");
-    scanf("%d %d %d", &n.date_naissance.jour, &n.date_naissance.mois, &n.date_naissance.annee);
-    vider_buffer(); 
-
-    bairo[nombre_etudiant] = n;
-    nombre_etudiant++;
+    bairo[nombre_etudiant++] = n;
     sauvegarder_dans_fichier(n);
-
-    printf("\n✅ [Succès] Étudiant ajouté avec succès !\n");
+    printf("\n✅ Étudiant ajouté avec succès !\n");
 }
+
 void editer_donnees_etudiant(etudiant *e) {
     int choix;
-    printf("\n--- 🛠️  MODIFICATION DE : %s %s ---\n", e->nom, e->prenom);
-    printf("Quelle information souhaitez-vous modifier ?\n");
-    printf(" 1. Nom          4. Filiere      7. Date de naissance\n");
-    printf(" 2. Prenom       5. Region       8. TOUT MODIFIER\n");
-    printf(" 3. Departement  6. Sexe\n");
-    printf("👉 Entrez votre choix : ");
-    scanf("%d", &choix); 
-    vider_buffer();
+    printf("\n--- 🛠️  MODIFICATION : %s %s ---\n", e->nom, e->prenom);
+    printf(" 1. Nom        4. Filière      7. Date de naissance\n");
+    printf(" 2. Prénom     5. Région       8. [TOUT MODIFIER]\n");
+    printf(" 3. Dépt       6. Sexe\n");
+    printf("👉 Choix : ");
+    scanf("%d", &choix); vider_buffer();
 
-    printf("✨ Entrez la nouvelle information : ");
     switch(choix) {
-        case 1:
-            printf("👤Nom : ");
-            fgets(e->nom, size_max, stdin); 
-            nettoyer_buffer_fgets(e->nom); break;
-        case 2: 
-            printf("👤Prénom : ");
-            fgets(e->prenom, size_max, stdin); 
-            nettoyer_buffer_fgets(e->prenom); 
-            break;
-        case 3:     
-            printf("🏢 Département : ");
-            fgets(e->departement, size_max, stdin); 
-            nettoyer_buffer_fgets(e->departement); 
-            break;
-        case 4: 
-            printf("📚 Filière : ");
-            fgets(e->filiere, size_max, stdin); 
-            nettoyer_buffer_fgets(e->filiere); 
-            break;
-        case 5: 
-            printf("🌍 Région d'origine : ");
-            fgets(e->region_origine, size_max, stdin); 
-            nettoyer_buffer_fgets(e->region_origine); 
-            break;
-        case 6: 
-            printf("🚻 sexe(M/F) : "); 
-            scanf(" %c", &e->sexe); 
-            vider_buffer(); 
-            break;
-        case 7:
-            printf("📅 Date de naissance (JJ MM AAAA) : ");
-                scanf("%d %d %d", &e->date_naissance.jour, &e->date_naissance.mois, &e->date_naissance.annee);
-            vider_buffer();
-            break;
-        case 8: {
-            printf("\n--- 📝 MODIFICATION COMPLETE ---\n");
-            printf("👤 Nom : "); 
-            fgets(e->nom, size_max, stdin); 
-            nettoyer_buffer_fgets(e->nom);
-            printf("👤 Prénom : "); 
-            fgets(e->prenom, size_max, stdin); 
-            nettoyer_buffer_fgets(e->prenom);
-            printf("🏢 Département : "); 
-            fgets(e->departement, size_max, stdin); 
-            nettoyer_buffer_fgets(e->departement);
-            printf("📚 Filière : "); 
-            fgets(e->filiere, size_max, stdin); 
-            nettoyer_buffer_fgets(e->filiere);
-            printf("🌍 Région d'origine : "); 
-            fgets(e->region_origine, size_max, stdin); 
-            nettoyer_buffer_fgets(e->region_origine);
-            printf("🚻 Sexe (M/F) : "); 
-            scanf(" %c", &e->sexe); 
-            vider_buffer();
-            printf("📅 Date (JJ MM AAAA) : "); 
-            scanf("%d %d %d", &e->date_naissance.jour, &e->date_naissance.mois, &e->date_naissance.annee);
-            vider_buffer();
-            break;
-        }
-
-        default: 
-        printf("⚠️ Choix invalide.\n");
+        case 1: printf("Nouveau Nom : "); fgets(e->nom, size_max, stdin); nettoyer_buffer_fgets(e->nom); break;
+        case 2: printf("Nouveau Prénom : "); fgets(e->prenom, size_max, stdin); nettoyer_buffer_fgets(e->prenom); break;
+        case 3: printf("Nouveau Dépt : "); fgets(e->departement, size_max, stdin); nettoyer_buffer_fgets(e->departement); break;
+        case 4: printf("Nouvelle Filière : "); fgets(e->filiere, size_max, stdin); nettoyer_buffer_fgets(e->filiere); break;
+        case 5: printf("Nouvelle Région : "); fgets(e->region_origine, size_max, stdin); nettoyer_buffer_fgets(e->region_origine); break;
+        case 6: printf("Nouveau Sexe (M/F) : "); scanf(" %c", &e->sexe); vider_buffer(); break;
+        case 7: printf("Nouvelle Date (JJ MM AAAA) : "); scanf("%d %d %d", &e->date_naissance.jour, &e->date_naissance.mois, &e->date_naissance.annee); vider_buffer(); break;
+        case 8: ajouter_un_etudiant(); break; // Réutilise la logique d'ajout pour tout réécrire
+        default: printf("⚠️ Choix invalide.\n");
     }
 }
-void modifier_une_information_de_l_etudiant() {
-    char mat[size_max];
-    printf("\n--- 🔍 RECHERCHE DU MATRICULE POUR MODIFICATION ---\n");
-    printf("Entrez le matricule de l'étudiant dont les informations doivent être modifiées : ");
-    fgets(mat, size_max, stdin); 
-    nettoyer_buffer_fgets(mat);
 
-    int b=0;
+void modifier_etudiant() {
+    char mat[size_max];
+    printf("┌──────────────────────────────────────────────────┐\n");   
+    printf("│ ⚙️  MODIFICATION DES INFORMATIONS ÉTUDIANT      │\n");
+    printf("└──────────────────────────────────────────────────┘\n");
+    printf("\n🔍 Entrez le matricule de l'étudiant dont on veut modifier les informations : ");
+    fgets(mat, size_max, stdin); nettoyer_buffer_fgets(mat);
+
     for(int i = 0; i < nombre_etudiant; i++) {
         if (strcmp(bairo[i].matricule, mat) == 0) {
-            
-            printf("\n--- ✏️ MODIFICATION DES INFORMATIONS DE L'ÉTUDIANT ---\n");
             editer_donnees_etudiant(&bairo[i]); 
-            
             actualiser_fichier(); 
-            printf("✅ [Succès] Informations mises à jour.\n");
-            b = 1;
-            break; 
+            printf("✅ Mise à jour effectuée.\n");
+            return;
         }
     }
-
-    if(!b) { 
-        printf("❌ [Erreur] Aucun étudiant trouvé avec le matricule : %s\n", mat); 
-    }
+    printf("❌ Aucun étudiant trouvé avec ce matricule.\n");
 }
 
-void calcul_age() {
-    char mat[size_max];
-    etudiant e;
-   
-    printf("🔍 Matricule de l'étudiant : ");
-    fgets(mat, size_max, stdin); 
-    nettoyer_buffer_fgets(mat);
-
-    if (recherche_par_matricule(mat, &e)) {
-        date d = extraction_date();
-        int age = d.annee - e.date_naissance.annee;
-        if (d.mois < e.date_naissance.mois || (d.mois == e.date_naissance.mois && d.jour < e.date_naissance.jour))
-            age--;
-        printf("💡 L'étudiant %s %s a %d ans.\n", e.prenom, e.nom, age);
-    } else {
-        printf("❌ Étudiant introuvables.\n");
-    }
-}
-void affiche_liste_etudiant() {
-    if (nombre_etudiant == 0) {
-        printf("⚠️Aucun etudiant a afficher.\n");
-        return;
-    }
-
-    FILE *f = fopen("liste des etudiants.txt", "w");
-    if (f == NULL) {
-        printf("⚠️[Warning]Creation de la liste des etudiants impossible.\n");
-        return;
-    }
-
-
-    fprintf(f, "=========================================================================================================================\n");
-    fprintf(f, "                                                🎓 LISTE DES ETUDIANTS - ENSPM 🎓                                           \n");
-    fprintf(f, "=========================================================================================================================\n\n");
-
-    
-    fprintf(f, "%-4s | %-12s | %-15s | %-15s | %-12s | %-4s | %-15s|%-15s |%-15s\n", 
-            "N°", "MATRICULE", "NOM", "PRENOM", "NAISSANCE", "SEXE", "FILIERE","DEPARTEMENT","REGION D'ORIGINE");
-    fprintf(f, "---------------------------------------------------------------------------------------------------------------------------\n");
-
-    
-    for (int i = 0; i < nombre_etudiant; i++) {
-        fprintf(f, "%-4d | %-12s | %-15s | %-15s | %02d/%02d/%04d | %-4c | %-15s|%-15s|%-15s\n", 
-                i + 1, 
-                bairo[i].matricule, 
-                bairo[i].nom, 
-                bairo[i].prenom,
-                bairo[i].date_naissance.jour, 
-                bairo[i].date_naissance.mois, 
-                bairo[i].date_naissance.annee,
-                bairo[i].sexe, 
-                bairo[i].filiere,
-                bairo[i].departement,
-                bairo[i].region_origine
-            );
-    }
-
-    fprintf(f, "--------------------------------------------------------------------------------------------------------------------------------\n");
-    
-
-    fclose(f);
-    printf("\n✅ [Succes] La liste des etudiants a ete generee dans 'liste des etudiants.txt'.\n");
-}
-void tri_departement(){
-    if(nombre_etudiant == 0){
-        printf("\n[Error]aucun etudiant en memoire.\n");
-        return;
-    }
-     for(int i = 0; i < nombre_etudiant - 1; i++) {
-        for(int j = i + 1; j < nombre_etudiant; j++) {
-            if(strcmp(bairo[i].departement, bairo[j].departement) > 0) {
-                etudiant tempo = bairo[i];
-                bairo[i] = bairo[j];
-                bairo[j] = tempo;
-            }
-        }
-    }
-        char departement_ok[size_max] = "";
-    for(int i = 0; i < nombre_etudiant; i++) {
-        if(strcmp(departement_ok, bairo[i].departement) != 0) {
-            strcpy(departement_ok, bairo[i].departement);
-            printf("\n\n>>> DEPARTEMENT: %-20s\n", departement_ok);
-            printf("-----------------------------------------------------------------------------------------------------------\n");
-            printf("%-12s | %-15s | %-15s | %-10s |%-12s| %-4s | %-15s\n", "MATRICULE", "NOM", "PRENOM", "NAISSANCE","FILIERE", "SEXE", "REGION");
-            printf("-----------------------------------------------------------------------------------------------------------\n");
-        }
-        printf("%-12s | %-15s | %-15s | %02d/%02d/%-4d |%-12s| %-4c | %-15s\n", 
-               bairo[i].matricule, bairo[i].nom, bairo[i].prenom,
-               bairo[i].date_naissance.jour, bairo[i].date_naissance.mois, bairo[i].date_naissance.annee,bairo[i].filiere,
-               bairo[i].sexe, bairo[i].region_origine);
-    }
-}
-    
-
-// Affiche les étudiants groupés par filière
-void tri_filiere() {
-    if (nombre_etudiant == 0) {
-        printf("\n[Error]Aucun etudiant en memoire.\n");
-        return;
-    }
-
-    
-    for(int i = 0; i < nombre_etudiant - 1; i++) {
-        for(int j = i + 1; j < nombre_etudiant; j++) {
-            if(strcmp(bairo[i].filiere, bairo[j].filiere) > 0) {
-                etudiant tempo = bairo[i];
-                bairo[i] = bairo[j];
-                bairo[j] = tempo;
-            }
-        }
-    }
-
-    char filiere_actuelle[size_max] = "";
-    for(int i = 0; i < nombre_etudiant; i++) {
-        if(strcmp(filiere_actuelle, bairo[i].filiere) != 0) {
-            strcpy(filiere_actuelle, bairo[i].filiere);
-            printf("\n\n>>> FILIERE : %-20s\n", filiere_actuelle);
-            printf("-----------------------------------------------------------------------------------------------------------\n");
-            printf("%-12s | %-15s | %-15s | %-10s | %-4s | %-15s\n", "MATRICULE", "NOM", "PRENOM", "NAISSANCE", "SEXE", "REGION");
-            printf("-----------------------------------------------------------------------------------------------------------\n");
-        }
-        printf("%-12s | %-15s | %-15s | %02d/%02d/%-4d | %-4c | %-15s\n", 
-               bairo[i].matricule, bairo[i].nom, bairo[i].prenom,
-               bairo[i].date_naissance.jour, bairo[i].date_naissance.mois, bairo[i].date_naissance.annee,
-               bairo[i].sexe, bairo[i].region_origine);
-    }
-}
-
-// Affiche les étudiants par ordre alphabétique 
-void tri_alphabetique() {
-    if (nombre_etudiant == 0) {
-        printf("\n[Error] Aucun etudiant enregistre.\n");
-        return;
-    }
-
-    for(int i = 0; i < nombre_etudiant - 1; i++) {
-        for(int j = i + 1; j < nombre_etudiant; j++) {
-            if(strcmp(bairo[i].nom, bairo[j].nom) > 0 || 
-              (strcmp(bairo[i].nom, bairo[j].nom) == 0 && strcmp(bairo[i].prenom, bairo[j].prenom) > 0)) {
-                etudiant tempo = bairo[i];
-                bairo[i] = bairo[j];
-                bairo[j] = tempo;
-            }
-        }
-    }
-
-    printf("\nLISTE ALPHABETIQUE DES ETUDIANTS\n");
-    printf("-----------------------------------------------------------------------------------------------------------\n");
-    printf("%-12s | %-15s | %-15s | %-15s | %-4s\n", "MATRICULE", "NOM", "PRENOM", "FILIERE", "SEXE");
-    printf("-----------------------------------------------------------------------------------------------------------\n");
-    for (int i = 0; i < nombre_etudiant; i++) {
-        printf("%-12s | %-15s | %-15s | %-15s | %-4c\n", 
-               bairo[i].matricule, bairo[i].nom, bairo[i].prenom, bairo[i].filiere, bairo[i].sexe);
-    }
-}
 void suppression_etudiant() {
     char mat[size_max];
-    
-    printf("Entrer le matricule de l'etudiant a supprimer: ");
-    fgets(mat, size_max, stdin); 
-    nettoyer_buffer_fgets(mat);
+    printf("\n🗑️  Matricule de l'étudiant à supprimer : ");
+    fgets(mat, size_max, stdin); nettoyer_buffer_fgets(mat);
 
     for (int i = 0; i < nombre_etudiant; i++) {
         if (strcmp(bairo[i].matricule, mat) == 0) {
             for (int j = i; j < nombre_etudiant - 1; j++) bairo[j] = bairo[j+1];
             nombre_etudiant--;
             actualiser_fichier();
-            printf("Etudiant supprime 🗑️.\n");
+            printf("✅ Étudiant supprimé de la base.\n");
             return;
         }
     }
-    printf("Non trouve.\n");
+    printf("❌ Matricule introuvable.\n");
 }
 
+/* =========================================================
+   🔍 RECHERCHE & ANALYSE
+   ========================================================= */
+
+void recherche() {
+    int choice;
+    printf("BIENVENUE DANS LE MODULE DE RECHERCHE DES ÉTUDIANTS\n");    
+    do {
+        printf("\n┌──────────────────────────────────────────┐\n");
+        printf("│         🔍 MODULE DE RECHERCHE           │\n");
+        printf("└──────────────────────────────────────────┘\n");
+        printf(" 1. Recherche par comparaison simple\n");
+        printf(" 2. Recherche dichotomique (Rapide)\n");
+        printf(" 3. Retour au menu\n");
+        printf("👉 Choix : ");
+        scanf("%d", &choice); vider_buffer();
+
+        char mat[size_max];
+        etudiant res;
+        if (choice == 1 || choice == 2) {
+            printf("Matricule recherché : ");
+            fgets(mat, size_max, stdin); nettoyer_buffer_fgets(mat);
+            
+            int trouve = (choice == 1) ? recherche_par_matricule(mat, &res) : recherche_dichotomique(mat, &res);
+            
+            if (trouve) printf("✅ TROUVÉ : %s %s (%s)\n", res.nom, res.prenom, res.filiere);
+            else printf("❌ Aucun étudiant correspondant.\n");
+        }
+    } while(choice != 3);
+}
 
 int recherche_dichotomique(char matrecher[], etudiant *res) {
     int debut = 0, fin = nombre_etudiant - 1;
-    
     while (debut <= fin) {
         int milieu = (debut + fin) / 2;
         int cmp = strcmp(bairo[milieu].matricule, matrecher);
-        if (cmp == 0) {
-            *res = bairo[milieu];
-            return 1; 
-        } else if (cmp < 0) {
-            debut = milieu + 1;
-        } else {
-            fin = milieu - 1;
-        }
+        if (cmp == 0) { *res = bairo[milieu]; return 1; }
+        else if (cmp < 0) debut = milieu + 1;
+        else fin = milieu - 1;
     }
     return 0; 
 }
+
 int recherche_par_matricule(char mat[], etudiant *res) {
-    
     for (int i = 0; i < nombre_etudiant; i++) {
-        if (strcmp(bairo[i].matricule, mat) == 0) {
-            *res = bairo[i];
-            return 1;
-        }
+        if (strcmp(bairo[i].matricule, mat) == 0) { *res = bairo[i]; return 1; }
     }
     return 0;
 }
 
+void calcul_age() {
+    char mat[size_max];
+    etudiant e;
+    printf("┌──────────────────────────────────────────┐\n");
+    printf("│        🎂 CALCUL DE L'ÂGE ÉTUDIANT       │\n");
+    printf("└──────────────────────────────────────────┘\n");
+    printf("\nEntrez matricule de l'étudiant dont on veut calculer l'age : ");
+    fgets(mat, size_max, stdin); nettoyer_buffer_fgets(mat);
+
+    if (recherche_par_matricule(mat, &e)) {
+        date d = extraction_date();
+        int age = d.annee - e.date_naissance.annee;
+        if (d.mois < e.date_naissance.mois || (d.mois == e.date_naissance.mois && d.jour < e.date_naissance.jour)) age--;
+        printf("💡 L'étudiant %s %s a %d ans.\n", e.prenom, e.nom, age);
+    } else printf("❌ Étudiant introuvable.\n");
+}
+
+/* =========================================================
+   📊 TRI & STATISTIQUES
+   ========================================================= */
+void apercu_tri(char* titre_tri) {
+    effacer_ecran();
+    printf("\n   >>> %s <<<\n", titre_tri);
+    printf(" ┌──────┬────────────┬──────────────────────┬──────────┬───────────────────┐\n");
+    printf(" │  N°  │ MATRICULE  │ NOM ET PRENOM        │ FILIÈRE  │DEPARTEMENT       │\n");
+    printf(" ├──────┼────────────┼──────────────────────┼──────────┼───────────────────┤\n");
+
+    for (int i = 0; i < nombre_etudiant; i++) {
+        char nom_complet[size_max * 2];
+        sprintf(nom_complet, "%s %s", bairo[i].nom, bairo[i].prenom);
+        
+        
+        printf(" │ %-4d │ %-10s │ %-20s │ %-20s │%-20s\n", 
+                i + 1, bairo[i].matricule, nom_complet, bairo[i].filiere, bairo[i].departement);
+    }
+    printf(" └──────┴────────────┴──────────────────────┴──────────────────────┘\n");
+    printf("\n ✅ Tri appliqué avec succès.");
+    pause();
+}
+void tri() {
+    int choice;
+    printf("BIENVENUE DANS LE MODULE DE TRI DES ÉTUDIANTS\n");
+    do {
+        printf("\n┌──────────────────────────────────────────┐\n");
+        printf("│           📂 GESTION DES TRIS            │\n");
+        printf("└──────────────────────────────────────────┘\n");
+        printf(" 1. Par ordre alphabétique\n");
+        printf(" 2. Par filière\n");
+        printf(" 3. Par département\n");
+        printf(" 4. Retour\n");
+        printf("Enter l'option de tri souhaiter : ");
+        scanf("%d", &choice); vider_buffer();
+
+        switch(choice) {
+            case 1: tri_alphabetique(); 
+            break;
+            case 2: tri_filiere(); break;
+            case 3: tri_departement(); break;
+        }
+    } while(choice != 4);
+}
+
+void tri_alphabetique() {
+    for(int i = 0; i < nombre_etudiant - 1; i++) {
+        for(int j = i + 1; j < nombre_etudiant; j++) {
+            if(strcmp(bairo[i].nom, bairo[j].nom) > 0) {
+                etudiant tempo = bairo[i]; bairo[i] = bairo[j]; bairo[j] = tempo;
+            }
+        }
+    }
+    printf("✅ Liste triée par nom.\n");
+    apercu_tri("TRI PAR ORDRE ALPHABÉTIQUE");
+    
+}
+
+void tri_filiere() {
+    // Logique de tri identique par champ filière
+    for(int i = 0; i < nombre_etudiant - 1; i++) {
+        for(int j = i + 1; j < nombre_etudiant; j++) {
+            if(strcmp(bairo[i].filiere, bairo[j].filiere) > 0) {
+                etudiant tempo = bairo[i]; bairo[i] = bairo[j]; bairo[j] = tempo;
+            }
+        }
+    }
+    printf("✅ Liste triée par filière.\n");
+    apercu_tri("TRI PAR FILIÈRE");    
+}
+
+void tri_departement() {
+    for(int i = 0; i < nombre_etudiant - 1; i++) {
+        for(int j = i + 1; j < nombre_etudiant; j++) {
+            if(strcmp(bairo[i].departement, bairo[j].departement) > 0) {
+                etudiant tempo = bairo[i]; bairo[i] = bairo[j]; bairo[j] = tempo;
+            }
+        }
+    }
+    printf("✅ Liste triée par département.\n");
+    apercu_tri("TRI PAR DÉPARTEMENT");
+
+}
+
 void statistiques_ecole() {
+    
     charger_donnees();
+    printf("BIENVENUE DANS LE MODULE DE STATISTIQUES DE L'ENSPM\n");
+
     if (nombre_etudiant == 0) {
-        printf("\n⚠️  [Erreur] Aucune donnée disponible pour les statistiques.\n");
+        printf("\n⚠️  [Info] La base de données est vide. Aucune statistique à afficher.\n");
         return;
     }
 
-    
-    StatItem stats_region[nombre_max_d_etudiant]; 
-    StatItem stats_fil[nombre_max_d_etudiant]; 
-    StatItem stats_dept[nombre_max_d_etudiant];
-    int nb_reg = 0, nb_fil = 0, nb_dep = 0;
+    // --- 1. VARIABLES POUR LE SEXE ---
     int filles = 0, garcons = 0;
 
+    // --- 2. STRUCTURES POUR LES AUTRES CATEGORIES ---
+    // On utilise tes structures StatItem pour compter les occurrences
+    StatItem stats_reg[nombre_max_d_etudiant]; 
+    StatItem stats_fil[nombre_max_d_etudiant]; 
+    StatItem stats_dept[nombre_max_d_etudiant];
+    
+    int nb_reg = 0, nb_fil = 0, nb_dep = 0;
+
     for (int i = 0; i < nombre_etudiant; i++) {
-        
+        // Comptage Sexe
         if (bairo[i].sexe == 'F' || bairo[i].sexe == 'f') filles++;
-        else if (bairo[i].sexe == 'M' || bairo[i].sexe == 'm') garcons++;
+        else garcons++;
 
-
-        int trouve_region = 0;
+        // Comptage Régions
+        int trouve = 0;
         for (int j = 0; j < nb_reg; j++) {
-            if (strcmp(bairo[i].region_origine, stats_region[j].label) == 0) {
-                stats_region[j].compteur++; 
-                trouve_region = 1; 
-                break;
+            if (strcmp(bairo[i].region_origine, stats_reg[j].label) == 0) {
+                stats_reg[j].compteur++; trouve = 1; break;
             }
         }
-        if (!trouve_region && nb_reg < nombre_max_d_etudiant) { 
-            strcpy(stats_region[nb_reg].label, bairo[i].region_origine); 
-            stats_region[nb_reg].compteur = 1; 
-            nb_reg++; }
-
-
-        int trouve_filiere = 0;    
-        for (int j = 0; j < nb_fil; j++) {
-            if (strcmp(bairo[i].filiere, stats_fil[j].label) == 0) {
-                stats_fil[j].compteur++; trouve_filiere = 1; break;
-            }
-        }
-        if (!trouve_filiere && nb_fil < nombre_max_d_etudiant) { 
-            strcpy(stats_fil[nb_fil].label, bairo[i].filiere); 
-            stats_fil[nb_fil].compteur = 1; 
-            nb_fil++; 
+        if (!trouve) { 
+            strcpy(stats_reg[nb_reg].label, bairo[i].region_origine); 
+            stats_reg[nb_reg].compteur = 1; nb_reg++; 
         }
 
-
-        int trouve_departement = 0;
+        // Comptage Départements
+        trouve = 0;
         for (int j = 0; j < nb_dep; j++) {
             if (strcmp(bairo[i].departement, stats_dept[j].label) == 0) {
-                stats_dept[j].compteur++; 
-                trouve_departement = 1;
-                break;
+                stats_dept[j].compteur++; trouve = 1; break;
             }
         }
-        if (!trouve_departement && nb_dep < nombre_max_d_etudiant) { 
+        if (!trouve) { 
             strcpy(stats_dept[nb_dep].label, bairo[i].departement); 
-            stats_dept[nb_dep].compteur = 1; 
-            nb_dep++; 
+            stats_dept[nb_dep].compteur = 1; nb_dep++; 
+        }
+
+        // Comptage Filières
+        trouve = 0;
+        for (int j = 0; j < nb_fil; j++) {
+            if (strcmp(bairo[i].filiere, stats_fil[j].label) == 0) {
+                stats_fil[j].compteur++; trouve = 1; break;
+            }
+        }
+        if (!trouve) { 
+            strcpy(stats_fil[nb_fil].label, bairo[i].filiere); 
+            stats_fil[nb_fil].compteur = 1; nb_fil++; 
         }
     }
 
-    // Affichage des résultats
-    printf("\n=====================================================\n");
-    printf("📊       RAPPORT STATISTIQUE GLOBAL - ENSPM        📊\n");
-    printf("=====================================================\n");
-    printf("👥 Effectif Total : %d étudiants\n", nombre_etudiant);
-    
+    // --- AFFICHAGE DU RAPPORT GLOBAL ---
+    printf("\n┌────────────────────────────────────────────────────────┐\n");
+    printf("│        📊  RAPPORT STATISTIQUE GLOBAL - ENSPM          │\n");
+    printf("└────────────────────────────────────────────────────────┘\n");
+    printf("  👥 Effectif Total : %d étudiants\n", nombre_etudiant);
+
     printf("\n🔹 RÉPARTITION PAR GENRE 🚻\n");
-    printf("   👩 Filles  : %d (%.1f%%)\n", filles, (filles * 100.0) / nombre_etudiant);
-    printf("   👨 Garçons : %d (%.1f%%)\n", garcons, (garcons * 100.0) / nombre_etudiant);
+    printf("  • 👩 Filles  : %d (%.1f%%)\n", filles, (filles * 100.0) / nombre_etudiant);
+    printf("  • 👨 Garçons : %d (%.1f%%)\n", garcons, (garcons * 100.0) / nombre_etudiant);
 
     printf("\n🔹 RÉPARTITION PAR DÉPARTEMENT 🏢\n");
-    for (int i = 0; i < nb_dep; i++) printf("   📍 %-15s : %d\n", stats_dept[i].label, stats_dept[i].compteur);
+    for (int i = 0; i < nb_dep; i++) {
+        printf("  • %-20s : %d étudiants\n", stats_dept[i].label, stats_dept[i].compteur);
+    }
 
-     printf("\n🔹 RÉPARTITION PAR FILIÈRE 📚\n");
-    for (int i = 0; i < nb_fil; i++) printf("   🎓 %-15s : %d\n", stats_fil[i].label, stats_fil[i].compteur);
+    printf("\n🔹 RÉPARTITION PAR FILIÈRE 📚\n");
+    for (int i = 0; i < nb_fil; i++) {
+        printf("  • %-20s : %d étudiants\n", stats_fil[i].label, stats_fil[i].compteur);
+    }
 
     printf("\n🔹 RÉPARTITION PAR RÉGION 🌍\n");
-    for (int i = 0; i < nb_reg; i++) printf("   🌍 %-15s : %d\n", stats_region[i].label, stats_region[i].compteur);
-    printf("=====================================================\n");
+    for (int i = 0; i < nb_reg; i++) {
+        printf("  • %-20s : %d étudiants\n", stats_reg[i].label, stats_reg[i].compteur);
+    
+    }
+
+    printf("\n──────────────────────────────────────────────────────────\n");
+    printf("Appuyez sur une touche pour revenir au menu...");
+    getchar();
+}
+
+/* =========================================================
+   📄 AFFICHAGE & EXPORT
+   ========================================================= */
+void affiche_liste_etudiant() {
+    if (nombre_etudiant == 0) {
+        printf("\n⚠️  La base de données est vide. Rien à exporter.\n");
+        return;
+    }
+
+    FILE *f = fopen("liste des etudiants.txt", "w");
+    if (f == NULL) {
+        printf("❌ Erreur lors de la création du fichier.\n");
+        return;
+    }
+
+    // --- EN-TÊTE DU FICHIER ---
+    fprintf(f, "                      📄  LISTE OFFICIELLE DES ETUDIANTS (ENSPM) 📄 \n");
+    fprintf(f, "┌──────┬────────────┬──────────────────────┬──────────────────────┬─────────────────┬───────────────┐\n");
+    fprintf(f, "│  N°  │ MATRICULE  │ NOM ET PRENOM        │ FILIERE              │ DEPARTEMENT     │   REGION      │\n");
+    fprintf(f, "├──────┼────────────┼──────────────────────┼──────────────────────┼─────────────────┼───────────────┤\n");
+
+    // --- EN-TÊTE CONSOLE ---
+    effacer_ecran();
+    printf("\n   >>> APERÇU COMPLET DE LA LISTE DES ETUDIANTS <<<\n\n");
+    printf(" %-4s | %-10s | %-20s | %-15s | %-12s | %-10s | %-6s\n", "N°", "MATRICULE", "NOM COMPLET", "FILIERE", "DEPARTEMENT", "REGION","SEXE");
+    printf(" ------------------------------------------------------------------------------------------------------\n");
+
+    // --- BOUCLE DE REMPLISSAGE (Uniquement pour les lignes) ---
+    for (int i = 0; i < nombre_etudiant; i++) {
+        char nom_complet[size_max * 2]; 
+        sprintf(nom_complet, "%s %s", bairo[i].nom, bairo[i].prenom);
+
+        // Ecriture dans le fichier
+        fprintf(f, "│ %-4d │ %-10s │ %-20s │ %-20s │ %-15s │ %-13s │%4c\n", 
+                i + 1, bairo[i].matricule, nom_complet, bairo[i].filiere, bairo[i].departement, bairo[i].region_origine, bairo[i].sexe);
+
+        // Affichage à l'écran
+        printf(" %-4d | %-10s | %-20s | %-15s | %-12s | %-10s | %c\n", 
+                i + 1, bairo[i].matricule, nom_complet, bairo[i].filiere, bairo[i].departement, bairo[i].region_origine, bairo[i].sexe); 
+    } 
+
+    
+    fprintf(f, "└──────┴────────────┴──────────────────────┴──────────────────────┴─────────────────┴───────────────┘\n");
+    fprintf(f, "\nTotal : %d etudiants enregistres.\n", nombre_etudiant);
+
+    fclose(f);
+
+    printf("\n------------------------------------------------------------------------------------------------------\n");
+    printf("✅ Liste générée dans 'liste des etudiants.txt'\n");
+    
 }
 /* =========================================================
-   📱 INTERFACE UTILISATEUR (MENU)
+   📱 MENU PRINCIPAL
    ========================================================= */
 
-void afficher_menu() {
-    printf("\n");
-    printf("    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n");
-    printf("    ┃      🎓 GESTION DES ÉTUDIANTS - ENSPM      ┃\n");
-    printf("    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
+void afficher_menu_principal() {
+    printf("  ┌──────────────────────────────────────────────────┐\n");
+    printf("  │      🎓 GESTION ÉTUDIANTS ENSPM🎓               │\n");
+    printf("  └──────────────────────────────────────────────────┘\n");
     printf("    1.  ➕ Ajouter un étudiant\n");
-    printf("    2.  🔍 Recherche par comparaison des Matricules\n");
-    printf("    3.  ⚡ Recherche rapide (Dichotomie)\n");
-    printf("    4.  🎂 Calculer l'âge\n");
-    printf("    5.  ⚙️  Modifier un étudiant\n");
-    printf("    6.  🗑️  Supprimer un étudiant\n");
-    printf("    7.  🔤 Tri Alphabétique\n");
-    printf("    8.  📂 Tri par Filière\n");
-    printf("    9.  🏢 Tri par Département\n");
-    printf("    10. 📄 Générer la liste des etudiants\n");
-    printf("    11. 📊 Voir les statistiques de l'ecole\n");
-    printf("    12. 🚪 Quitter le programme\n");
-    printf("    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-    
+    printf("    2.  🔍 Recherche & Filtres\n");
+    printf("    3.  🎂 Calculer l'âge\n");
+    printf("    4.  ⚙️ Modifier les informations d'un étudiant\n");
+    printf("    5.  🗑️ Supprimer un étudiant\n");
+    printf("    6.  📂 Trier des étudiants\n");
+    printf("    7.  📄 Generer la liste des etudiants(.txt)\n");
+    printf("    8.  📊 Statistiques globales\n");
+    printf("    0.  🚪 Quitter le programme\n");
+    printf("  ──────────────────────────────────────────────\n");
+
 }

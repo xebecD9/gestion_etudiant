@@ -1,85 +1,73 @@
 #include "librairie.h"
+#include <windows.h>
 
-int main() {
-    int choix;
-    charger_donnees(); 
-    
-    do {
-        afficher_menu();
-        printf("Veuillez entrer le numero de l'operation que vous souhaitez effectuer:");
-        if (scanf("%d", &choix) != 1) { 
-            vider_buffer(); 
-            continue; 
-        }
-        vider_buffer();
+int main(){
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
+int choix;
+  do{  
+    charger_donnees();
+    effacer_ecran();
+    afficher_menu_principal();
+    printf("👉Veuillez entrer votre choix : ");
+   if (scanf("%d", &choix) != 1) { 
+        printf("\n⚠️  Erreur : Veuillez entrer un nombre valide.\n");
+        vider_buffer(); // Nettoie les lettres saisies par erreur
+        pause();        // Laisse le temps de lire le message d'erreur
+        continue;     // Quitte le programme avec un code d'erreur
+    }
+    vider_buffer();
 
-        switch(choix) {
-            case 1: 
-                printf("===AJOUT D'UN ETUDIANT===\n");
-                ajouter_un_etudiant(); 
-                break;
-            case 2: {
-                char mat1[size_max]; etudiant m;
-                printf("===RECHERCHE PAR COMPARAISON DES MATRICULES===\n"); 
-                printf("Veuillez le matricule de l'etudiant que vous rechercher : ");
-                fgets(mat1, size_max, stdin); 
-                nettoyer_buffer_fgets(mat1);
-                if(recherche_par_matricule(mat1, &m)) printf("L'etudiant recherche s'appelle : %s %s\n", m.nom, m.prenom);
-                else printf("[error]Aucun etudiant trouve.\n");
-                break;
-            }
-            case 3:{
-                char mat2[size_max]; etudiant d;
-                printf("===RECHERCHE DICHOTOMIQUE===\n");
-                printf("Veuillez le matricule de l'etudiant que vous rechercher : ");
-                fgets(mat2, size_max, stdin); nettoyer_buffer_fgets(mat2);
-                if(recherche_dichotomique(mat2, &d)) {
-                printf("L'etudiant recherche s'appelle : %s %s\n", d.nom, d.prenom);
-                printf("voici ces informations");
-                }
-                else {
-                printf("[Error]Etudiant aucun etudiant trouve.\n");
-                }
+    switch(choix){
+        case 1:
+            effacer_ecran();
+            ajouter_un_etudiant();
+            pause();
             break;
-            }
+        case 2:
+            effacer_ecran();
+            recherche();
+            pause();
+            break;
+        case 3:
+            effacer_ecran();
+            calcul_age();
+            pause();
+            break;
+        case 4:
+            effacer_ecran();    
+            modifier_etudiant();
+            pause();
+            break;
+        case 5:
+            effacer_ecran();
+            suppression_etudiant();
+            pause();
+            break;
+        case 6:
+            effacer_ecran();
+            tri();
+            pause();
+            break;
+        case 7:
+            effacer_ecran();    
+            affiche_liste_etudiant();
+            pause();
+            break;
+        case 8:
+            effacer_ecran();
+            statistiques_ecole();
+               
+            break;
 
-            case 4: 
-                printf("=== 🎂 CALCUL D'AGE  ===\n");
-                calcul_age(); 
-                break;
-            case 5:
-                printf("===  ⚙️MODIFICATION  ===\n");
-                modifier_une_information_de_l_etudiant(); 
-                break;
-            case 6: 
-                printf("===  SUPPRESSION  ===\n");
-                suppression_etudiant(); 
-                break;
-            case 7: 
-                printf("===  TRI ALPHABETIQUE  ===\n");
-                tri_alphabetique(); 
-                break;
-            case 8: 
-                printf("===  TRI PAR FILIERE  ===\n");
-                tri_filiere(); 
-                break;
-            case 9:
-                printf("===TRI PAR DEPARTEMENT===");
-                tri_departement();
-                break;    
-            case 10: 
-                printf("===AFFICHAGE DE LA LISTE DES ETUDIANTS===\n");
-                affiche_liste_etudiant(); 
-                break;
-            
-            case 11:
-                printf("===STATISTIQUES DE L'ECOLE===\n");
-                statistiques_ecole();
-                break;
-            case 12: 
-                printf("Au revoir !\n"); 
-                break;
-        }
-    } while (choix != 12);
+        case 0:
+            printf("Merci d'avoir utilisé le système de gestion ENSPM. Au revoir !\n");
+            break;
+        default:
+            printf("Choix invalide. Veuillez réessayer.\n");
+            break;
+    }
+  }while(choix != 0);
+
     return 0;
 }

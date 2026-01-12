@@ -26,7 +26,7 @@ void afficherEtudiants() {
         e.departement,
         e.filiere,
         e.region) == 9) {
-
+//affichage etudiant
         printf("| %-12s | %-10s | %-10s | %02d/%02d/%04d | %-12s | %-10s | %-10s |\n",
                e.matricule,
                e.nom,

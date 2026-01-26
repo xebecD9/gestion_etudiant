@@ -429,14 +429,14 @@ void affiche_liste_etudiant() {
 
     // --- EN-TÊTE DU FICHIER ---
     fprintf(f, "                      📄  LISTE OFFICIELLE DES ETUDIANTS (ENSPM) 📄 \n");
-    fprintf(f, "┌──────┬────────────┬──────────────────────┬──────────────────────┬─────────────────┬───────────────┐\n");
-    fprintf(f, "│  N°  │ MATRICULE  │ NOM ET PRENOM        │ FILIERE              │ DEPARTEMENT     │   REGION      │\n");
-    fprintf(f, "├──────┼────────────┼──────────────────────┼──────────────────────┼─────────────────┼───────────────┤\n");
+    fprintf(f, "┌──────┬────────────┬──────────────────────┬──────────────────────┬─────────────────┬───────────────┬─────┐\n");
+    fprintf(f, "│  N°  │ MATRICULE  │ NOM ET PRENOM        │ FILIERE              │ DEPARTEMENT     │   REGION      │SEXE │\n");
+    fprintf(f, "├──────┼────────────┼──────────────────────┼──────────────────────┼─────────────────┼───────────────┼─────┤\n");
 
     // --- EN-TÊTE CONSOLE ---
     effacer_ecran();
     printf("\n   >>> APERÇU COMPLET DE LA LISTE DES ETUDIANTS <<<\n\n");
-    printf(" %-4s | %-10s | %-20s | %-15s | %-12s | %-10s | %-6s\n", "N°", "MATRICULE", "NOM COMPLET", "FILIERE", "DEPARTEMENT", "REGION","SEXE");
+    printf(" %-4s | %-10s | %-20s | %-15s | %-12s | %-10s | %-6s\n", "N°", "MATRICULE", "NOM COMPLET", "FILIERE", "DEPARTEMENT", "REGION", "SEXE");
     printf(" ------------------------------------------------------------------------------------------------------\n");
 
     // --- BOUCLE DE REMPLISSAGE (Uniquement pour les lignes) ---
